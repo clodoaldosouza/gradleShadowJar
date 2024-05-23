@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+    id 'application'
+    id "com.github.johnrengelman.shadow" version "7.0.0"
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+mainClassName = "org.example.ExampleShadow" // Insert here the mainclass ex: org.example.Main
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+shadowJar { // <- Run this to make the jar file in the folder build\libs\
+    clean
+    project.configurations.implementation.canBeResolved = true
+    configurations = [project.configurations.implementation]
+    archiveBaseName.set('example') // Optional name of JAR
+    archiveClassifier.set('')
+    archiveVersion.set('')
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
